@@ -1,17 +1,17 @@
 # SemVer Bumper
 
-[![Coverage Status][coverage-badge]][coverage]
-[![GitHub Workflow Status][status-badge]][status]
-[![PyPI][pypi-badge]][pypi]
-[![GitHub][licence-badge]][licence]
-[![GitHub Last Commit][repo-badge]][repo]
-[![GitHub Issues][issues-badge]][issues]
-[![Downloads][downloads-badge]][pypi]
-[![Python Version][version-badge]][pypi]
+[//]: # ([![Coverage Status][coverage-badge]][coverage])
+[//]: # ([![GitHub Workflow Status][status-badge]][status])
+[//]: # ([![PyPI][pypi-badge]][pypi])
+[//]: # ([![GitHub][licence-badge]][licence])
+[//]: # ([![GitHub Last Commit][repo-badge]][repo])
+[//]: # ([![GitHub Issues][issues-badge]][issues])
+[//]: # ([![Downloads][downloads-badge]][pypi])
+[//]: # ([![Python Version][version-badge]][pypi])
 
-```shell
-pip install semver-bumper
-```
+[//]: # (```shell)
+[//]: # (pip install semver-bumper)
+[//]: # (```)
 
 ---
 
@@ -23,7 +23,9 @@ pip install semver-bumper
 
 ---
 
-Automate semantic version bumping from function argument changes.
+Automatically determine semantic version bumping from changes in your app's
+interface, i.e., existing functions, classes and variables, as well as their
+arguments and types.
 
 [coverage-badge]: https://coveralls.io/repos/github/MrThearMan/semver-bumper/badge.svg?branch=main
 [status-badge]: https://img.shields.io/github/actions/workflow/status/MrThearMan/semver-bumper/test.yml?branch=main
