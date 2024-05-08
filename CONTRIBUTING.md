@@ -31,7 +31,7 @@ Once you have created a [feature request], we have agreed on an implementation,
 and you wish to work on it, follow these steps to create a pull request.
 
 1. [Fork the repository][fork].
-2. Clone your fork and create a new branch from the `main` branch.
+2. Clone your fork (with `--recurse-submodules`) and create a new branch from the `main` branch.
 3. [Set up the environment][setup].
 4. Make changes and write tests following [these guidelines][code-guidelines].
 5. Add documentation when applicable following [these guidelines][docs-guidelines].
