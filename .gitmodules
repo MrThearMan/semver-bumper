@@ -1,0 +1,4 @@
+[submodule "tests/example_git"]
+	path = tests/example_git
+	url = https://github.com/MrThearMan/semver-bumper-testing.git
+	branch = main

@@ -153,6 +153,8 @@ lint.ignore = [
     "ARG003",   # Unused class method argument
     "RUF012",   # No need for ClassVar
     "G004",     # Logging statement uses f-string
+    "S602",     # Broken: https://github.com/astral-sh/ruff/issues/4045
+    "S603",     # Broken: https://github.com/astral-sh/ruff/issues/4045
     #
     # Conflicting with ruff-format
     #

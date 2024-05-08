@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -11,7 +12,10 @@ __all__ = [
     "get_module_path",
     "is_dunder_method",
     "is_internal_method",
+    "logger",
 ]
+
+logger = logging.getLogger(__name__)
 
 
 def get_module_path(path: Path) -> str:
