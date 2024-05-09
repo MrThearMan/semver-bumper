@@ -19,7 +19,13 @@ logger = logging.getLogger(__name__)
 
 
 def get_module_path(path: Path) -> str:
-    module = path.stem
+    """
+    Get the module path for the given python file.
+    Recurses up the directory tree until a path without a `__init__.py` file is found.
+
+    :param path: The path to the python module file.
+    """
+    module = path.stem if path.stem != "__init__" else ""
 
     parent = path.parent
     while parent.name:
@@ -28,19 +34,26 @@ def get_module_path(path: Path) -> str:
         module = f"{parent.name}.{module}"
         parent = parent.parent
 
-    return module
+    return module.strip(".")
 
 
 def is_internal_method(name: str) -> bool:
+    """Is the given name an internal method?"""
     return name.startswith("_")
 
 
 def is_dunder_method(name: str) -> bool:
+    """Is the given name a dunder method?"""
     return name.startswith("__") and name.endswith("__")
 
 
-def find_python_files(base_path: Path) -> Generator[Path, None, None]:
-    for path_object in base_path.rglob("*.py"):
+def find_python_files(path: Path) -> Generator[Path, None, None]:
+    """
+    Find all python files in the given directory and its subdirectories.
+
+    :param path: The base directory to start searching python files from.
+    """
+    for path_object in path.rglob("*.py"):
         if not path_object.is_file():
             continue
 

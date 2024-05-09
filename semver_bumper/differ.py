@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from .typing import Diff, DiffKind
+from .typing import BodyData, Diff, DiffKind
 
 if TYPE_CHECKING:
-    from .typing import AssignmentData, ClassData, FunctionData, ModuleData
+    from .typing import AssignmentData, ClassData, FunctionData
 
 
 __all__ = [
@@ -13,7 +13,13 @@ __all__ = [
 ]
 
 
-def get_diffs(old: ModuleData, new: ModuleData) -> list[Diff]:
+def get_diffs(old: BodyData, new: BodyData) -> list[Diff]:
+    """
+    Find the differences between two module bodies.
+
+    :param old: The old module body.
+    :param new: The new module body.
+    """
     changes: list[Diff] = []
 
     changes += _diff_functions(old.functions, new.functions)

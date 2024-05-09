@@ -116,6 +116,10 @@ __all__ = [
     "function_95",
     "function_96",
     "function_97",
+    "function_98",
+    "function_99",
+    "function_100",
+    "function_101",
 ]
 
 
@@ -165,394 +169,309 @@ def decorator(func):
     return wrapper
 
 
-def function_01(name, age) -> None:
-    pass
+def function_01(name, age) -> None: ...
 
 
-def function_02(name: int, age) -> None:
-    pass
+def function_02(name: int, age) -> None: ...
 
 
-def function_03(name, age: int) -> None:
-    pass
+def function_03(name, age: int) -> None: ...
 
 
-def function_04(name: int, age: int) -> None:
-    pass
+def function_04(name: int, age: int) -> None: ...
 
 
-def function_05(name, age=2.0) -> None:
-    pass
+def function_05(name, age=2.0) -> None: ...
 
 
-def function_06(name: int, age=2.0) -> None:
-    pass
+def function_06(name: int, age=2.0) -> None: ...
 
 
-def function_07(name, age: int = 2.0) -> None:
-    pass
+def function_07(name, age: int = 2.0) -> None: ...
 
 
-def function_08(name: int, age: int = 2.0) -> None:
-    pass
+def function_08(name: int, age: int = 2.0) -> None: ...
 
 
-def function_09(name=1.0, age=2.0) -> None:
-    pass
+def function_09(name=1.0, age=2.0) -> None: ...
 
 
-def function_10(name: int = 1.0, age=2.0) -> None:
-    pass
+def function_10(name: int = 1.0, age=2.0) -> None: ...
 
 
-def function_11(name=1.0, age: int = 2.0) -> None:
-    pass
+def function_11(name=1.0, age: int = 2.0) -> None: ...
 
 
-def function_12(name: int = 1.0, age: int = 2.0) -> None:
-    pass
+def function_12(name: int = 1.0, age: int = 2.0) -> None: ...
 
 
-def function_13(*, name, age) -> None:
-    pass
+def function_13(*, name, age) -> None: ...
 
 
-def function_14(*, name: int, age) -> None:
-    pass
+def function_14(*, name: int, age) -> None: ...
 
 
-def function_15(*, name, age: int) -> None:
-    pass
+def function_15(*, name, age: int) -> None: ...
 
 
-def function_16(*, name: int, age: int) -> None:
-    pass
+def function_16(*, name: int, age: int) -> None: ...
 
 
-def function_17(*, name, age=2.0) -> None:
-    pass
+def function_17(*, name, age=2.0) -> None: ...
 
 
-def function_18(*, name: int, age=2.0) -> None:
-    pass
+def function_18(*, name: int, age=2.0) -> None: ...
 
 
-def function_19(*, name, age: int = 2.0) -> None:
-    pass
+def function_19(*, name, age: int = 2.0) -> None: ...
 
 
-def function_20(*, name: int, age: int = 2.0) -> None:
-    pass
+def function_20(*, name: int, age: int = 2.0) -> None: ...
 
 
-def function_21(*, name=1.0, age=2.0) -> None:
-    pass
+def function_21(*, name=1.0, age=2.0) -> None: ...
 
 
-def function_22(*, name: int = 1.0, age=2.0) -> None:
-    pass
+def function_22(*, name: int = 1.0, age=2.0) -> None: ...
 
 
-def function_23(*, name=1.0, age: int = 2.0) -> None:
-    pass
+def function_23(*, name=1.0, age: int = 2.0) -> None: ...
 
 
-def function_24(*, name: int = 1.0, age: int = 2.0) -> None:
-    pass
+def function_24(*, name: int = 1.0, age: int = 2.0) -> None: ...
 
 
-def function_25(name, *args) -> None:
-    pass
+def function_25(name, *args) -> None: ...
 
 
-def function_26(name: int, *args) -> None:
-    pass
+def function_26(name: int, *args) -> None: ...
 
 
-def function_27(name, *args: int) -> None:
-    pass
+def function_27(name, *args: int) -> None: ...
 
 
-def function_28(name: int, *args: int) -> None:
-    pass
+def function_28(name: int, *args: int) -> None: ...
 
 
-def function_29(name, **kwargs) -> None:
-    pass
+def function_29(name, **kwargs) -> None: ...
 
 
-def function_30(name: int, **kwargs) -> None:
-    pass
+def function_30(name: int, **kwargs) -> None: ...
 
 
-def function_31(name, **kwargs: int) -> None:
-    pass
+def function_31(name, **kwargs: int) -> None: ...
 
 
-def function_32(name: int, **kwargs: int) -> None:
-    pass
+def function_32(name: int, **kwargs: int) -> None: ...
 
 
-def function_33(name=1.0, **kwargs) -> None:
-    pass
+def function_33(name=1.0, **kwargs) -> None: ...
 
 
-def function_34(name: int = 1.0, **kwargs) -> None:
-    pass
+def function_34(name: int = 1.0, **kwargs) -> None: ...
 
 
-def function_35(name=1.0, **kwargs: int) -> None:
-    pass
+def function_35(name=1.0, **kwargs: int) -> None: ...
 
 
-def function_36(name: int = 1.0, **kwargs: int) -> None:
-    pass
+def function_36(name: int = 1.0, **kwargs: int) -> None: ...
 
 
-def function_37(name, *args, **kwargs) -> None:
-    pass
+def function_37(name, *args, **kwargs) -> None: ...
 
 
-def function_38(name: int, *args, **kwargs) -> None:
-    pass
+def function_38(name: int, *args, **kwargs) -> None: ...
 
 
-def function_39(name, *args: int, **kwargs) -> None:
-    pass
+def function_39(name, *args: int, **kwargs) -> None: ...
 
 
-def function_40(name: int, *args: int, **kwargs) -> None:
-    pass
+def function_40(name: int, *args: int, **kwargs) -> None: ...
 
 
-def function_41(name, *args, **kwargs: int) -> None:
-    pass
+def function_41(name, *args, **kwargs: int) -> None: ...
 
 
-def function_42(name: int, *args, **kwargs: int) -> None:
-    pass
+def function_42(name: int, *args, **kwargs: int) -> None: ...
 
 
-def function_43(name, *args: int, **kwargs: int) -> None:
-    pass
+def function_43(name, *args: int, **kwargs: int) -> None: ...
 
 
-def function_44(name: int, *args: int, **kwargs: int) -> None:
-    pass
+def function_44(name: int, *args: int, **kwargs: int) -> None: ...
 
 
-def function_45(name=1.0, *args, **kwargs) -> None:
-    pass
+def function_45(name=1.0, *args, **kwargs) -> None: ...
 
 
-def function_46(name: int = 1.0, *args, **kwargs) -> None:
-    pass
+def function_46(name: int = 1.0, *args, **kwargs) -> None: ...
 
 
-def function_47(name=1.0, *args: int, **kwargs) -> None:
-    pass
+def function_47(name=1.0, *args: int, **kwargs) -> None: ...
 
 
-def function_48(name: int = 1.0, *args: int, **kwargs) -> None:
-    pass
+def function_48(name: int = 1.0, *args: int, **kwargs) -> None: ...
 
 
-def function_49(name=1.0, *args, **kwargs: int) -> None:
-    pass
+def function_49(name=1.0, *args, **kwargs: int) -> None: ...
 
 
-def function_50(name: int = 1.0, *args, **kwargs: int) -> None:
-    pass
+def function_50(name: int = 1.0, *args, **kwargs: int) -> None: ...
 
 
-def function_51(name=1.0, *args: int, **kwargs: int) -> None:
-    pass
+def function_51(name=1.0, *args: int, **kwargs: int) -> None: ...
 
 
-def function_52(name: int = 1.0, *args: int, **kwargs: int) -> None:
-    pass
+def function_52(name: int = 1.0, *args: int, **kwargs: int) -> None: ...
 
 
-def function_53(name, *, age) -> None:
-    pass
+def function_53(name, *, age) -> None: ...
 
 
-def function_54(name: int, *, age) -> None:
-    pass
+def function_54(name: int, *, age) -> None: ...
 
 
-def function_55(name, *, age: int) -> None:
-    pass
+def function_55(name, *, age: int) -> None: ...
 
 
-def function_56(name: int, *, age: int) -> None:
-    pass
+def function_56(name: int, *, age: int) -> None: ...
 
 
-def function_57(name=1.0, *, age) -> None:
-    pass
+def function_57(name=1.0, *, age) -> None: ...
 
 
-def function_58(name: int = 1.0, *, age) -> None:
-    pass
+def function_58(name: int = 1.0, *, age) -> None: ...
 
 
-def function_59(name=1.0, *, age: int) -> None:
-    pass
+def function_59(name=1.0, *, age: int) -> None: ...
 
 
-def function_60(name: int = 1.0, *, age: int) -> None:
-    pass
+def function_60(name: int = 1.0, *, age: int) -> None: ...
 
 
-def function_61(name, *, age=2.0) -> None:
-    pass
+def function_61(name, *, age=2.0) -> None: ...
 
 
-def function_62(name: int, *, age=2.0) -> None:
-    pass
+def function_62(name: int, *, age=2.0) -> None: ...
 
 
-def function_63(name, *, age: int = 2.0) -> None:
-    pass
+def function_63(name, *, age: int = 2.0) -> None: ...
 
 
-def function_64(name: int, *, age: int = 2.0) -> None:
-    pass
+def function_64(name: int, *, age: int = 2.0) -> None: ...
 
 
-def function_65(x: str) -> None:
-    pass
+def function_65(name, /, age) -> None: ...
 
 
-def function_66(x: int) -> None:
-    pass
+def function_66(name: int, /, age: int) -> None: ...
 
 
-def function_67(x: float) -> None:
-    pass
+def function_67(name=1.0, /, age=2.0) -> None: ...
 
 
-def function_68(x: bool) -> None:
-    pass
+def function_68(name: int = 1.0, /, age: int = 2.0) -> None: ...
 
 
-def function_69(x: dict) -> None:
-    pass
+def function_69(x: str) -> None: ...
 
 
-def function_70(x: list) -> None:
-    pass
+def function_70(x: int) -> None: ...
 
 
-def function_71(x: date) -> None:
-    pass
+def function_71(x: float) -> None: ...
 
 
-def function_72(x: datetime) -> None:
-    pass
+def function_72(x: bool) -> None: ...
 
 
-def function_73(x: time) -> None:
-    pass
+def function_73(x: dict) -> None: ...
 
 
-def function_74(x: timedelta) -> None:
-    pass
+def function_74(x: list) -> None: ...
 
 
-def function_75(x: Decimal) -> None:
-    pass
+def function_75(x: date) -> None: ...
 
 
-def function_76(x: type) -> None:
-    pass
+def function_76(x: datetime) -> None: ...
 
 
-def function_77(x: Exception) -> None:
-    pass
+def function_77(x: time) -> None: ...
 
 
-def function_78(foo: Foo) -> None:
-    pass
+def function_78(x: timedelta) -> None: ...
 
 
-def function_79(foo: Fizz) -> None:
-    pass
+def function_79(x: Decimal) -> None: ...
 
 
-def function_80(foo: Bar) -> None:
-    pass
+def function_80(x: type) -> None: ...
 
 
-def function_81(foo: Barr) -> None:
-    pass
+def function_81(x: Exception) -> None: ...
 
 
-def function_82(foo: Baz) -> None:
-    pass
+def function_82(foo: Foo) -> None: ...
 
 
-def function_83(foo: Bazz) -> None:
-    pass
+def function_83(foo: Fizz) -> None: ...
 
 
-def function_84() -> Foo:
-    pass
+def function_84(foo: Bar) -> None: ...
 
 
-def function_85() -> Fizz:
-    pass
+def function_85(foo: Barr) -> None: ...
 
 
-def function_86() -> Bar:
-    pass
+def function_86(foo: Baz) -> None: ...
 
 
-def function_87() -> Barr:
-    pass
+def function_87(foo: Bazz) -> None: ...
 
 
-def function_88() -> Baz:
-    pass
+def function_88() -> Foo: ...
 
 
-def function_89() -> Bazz:
-    pass
+def function_89() -> Fizz: ...
+
+
+def function_90() -> Bar: ...
+
+
+def function_91() -> Barr: ...
+
+
+def function_92() -> Baz: ...
+
+
+def function_93() -> Bazz: ...
 
 
 @decorator
-def function_90(foo: Foo) -> None:
-    pass
+def function_94(foo: Foo) -> None: ...
 
 
 @decorator
-def function_91() -> Foo:
-    pass
+def function_95() -> Foo: ...
 
 
-def function_92() -> list[Foo]:
-    pass
+def function_96() -> list[Foo]: ...
 
 
-def function_93() -> dict[str, Foo]:
-    pass
+def function_97() -> dict[str, Foo]: ...
 
 
-def function_94(foo: Buzz) -> None:
-    pass
+def function_98(foo: Buzz) -> None: ...
 
 
-def function_95() -> Buzz:
-    pass
+def function_99() -> Buzz: ...
 
 
-def function_96(foo: str | int) -> None:
-    pass
+def function_100(foo: str | int) -> None: ...
 
 
-def function_97() -> Foo | Bar:
-    pass
+def function_101() -> Foo | Bar: ...
 
 
 class Class_1:
@@ -561,20 +480,15 @@ class Class_1:
     class Class_2:
         foo = {1: "foo", "z": [1, 2, 3]}
 
-    def __init__(self, foo: Foo) -> None:
-        pass
+    def __init__(self, foo: Foo) -> None: ...
 
-    def method(self, foo: int) -> None:
-        pass
+    def method(self, foo: int) -> None: ...
 
     @classmethod
-    def classmethod(cls, foo: int) -> None:
-        pass
+    def classmethod(cls, foo: int) -> None: ...
 
     @staticmethod
-    def staticmethod(foo: int) -> None:
-        pass
+    def staticmethod(foo: int) -> None: ...
 
     @property
-    def property(self) -> None:
-        pass
+    def property(self) -> None: ...

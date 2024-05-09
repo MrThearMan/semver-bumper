@@ -2,29 +2,27 @@ from __future__ import annotations
 
 import ast
 import json
-from itertools import zip_longest
-from typing import TYPE_CHECKING
 
-from .typing import ArgumentData, AssignmentData, BodyData, ClassData, FunctionData, ModuleData
-from .utils import get_module_path, is_dunder_method, is_internal_method
-
-if TYPE_CHECKING:
-    from pathlib import Path
+from .typing import ArgKind, ArgumentData, AssignmentData, BodyData, ClassData, FunctionArguments, FunctionData
+from .utils import is_dunder_method, is_internal_method
 
 __all__ = [
-    "parse_module",
+    "parse_module_body",
 ]
 
 
-def parse_module(path: Path) -> ModuleData:
-    module: ast.Module = ast.parse(path.read_text())
-    return ModuleData(
-        name=get_module_path(path),
-        body=_parse_body(module.body, dunder_all=_get_dunder_all(module)),
-    )
+def parse_module_body(contents: str) -> BodyData:
+    """
+    Parse the given python file contents into the required data for version diffing.
+
+    :param contents: The contents of the python file.
+    """
+    module: ast.Module = ast.parse(contents)
+    return _parse_body(module.body, dunder_all=_get_dunder_all(module))
 
 
 def _get_dunder_all(module: ast.Module) -> list[str] | None:
+    """Find the __all__ attribute in the given module, if it exists."""
     for node in module.body:
         if isinstance(node, ast.Assign):
             name = _node_to_string(node.targets[0])
@@ -34,6 +32,7 @@ def _get_dunder_all(module: ast.Module) -> list[str] | None:
 
 
 def _parse_body(nodes: list[ast.stmt], *, dunder_all: list[str] | None = None) -> BodyData:
+    """Parse the list of ast statements in an object body (e.g., module/class) into diffing data."""
     body = BodyData()
 
     for node in nodes:
@@ -70,18 +69,51 @@ def _parse_body(nodes: list[ast.stmt], *, dunder_all: list[str] | None = None) -
 
 
 def _get_argument_data(node: ast.FunctionDef) -> list[ArgumentData]:
-    args = [
-        ArgumentData(
-            name=arg.arg,
-            type=_node_to_string(arg.annotation) if arg.annotation is not None else _infer_type_for_node(default),
+    """Get the argument data for a function definition."""
+    data: list[ArgumentData] = []
+    arguments = FunctionArguments.from_ast(node)
+
+    for arg, default in arguments.args_with_defaults:
+        data.append(
+            ArgumentData(
+                name=arg.arg,
+                type=_node_to_string(arg.annotation) if arg.annotation is not None else _infer_type_for_node(default),
+                kind=ArgKind.POSITIONAL_ONLY if arg in arguments.posonlyargs else ArgKind.REGULAR,
+            )
         )
-        for arg, default in zip_longest(reversed(node.args.args), reversed(node.args.defaults))
-    ]
-    args.reverse()
-    return args
+
+    if arguments.vararg is not None:
+        data.append(
+            ArgumentData(
+                name=arguments.vararg.arg,
+                type=_node_to_string(arguments.vararg.annotation),
+                kind=ArgKind.ARGS,
+            )
+        )
+
+    for arg, default in arguments.kwargs_with_defaults:
+        data.append(
+            ArgumentData(
+                name=arg.arg,
+                type=_node_to_string(arg.annotation) if arg.annotation is not None else _infer_type_for_node(default),
+                kind=ArgKind.KEYWORD_ONLY,
+            )
+        )
+
+    if arguments.kwarg is not None:
+        data.append(
+            ArgumentData(
+                name=arguments.kwarg.arg,
+                type=_node_to_string(arguments.kwarg.annotation),
+                kind=ArgKind.KWARGS,
+            )
+        )
+
+    return data
 
 
 def _should_include_function(node: ast.FunctionDef, dunder_all: list[str] | None) -> bool:
+    """Should the given function definition be included in the diffing data?"""
     name = node.name
     if dunder_all is not None:
         return name in dunder_all
@@ -89,6 +121,7 @@ def _should_include_function(node: ast.FunctionDef, dunder_all: list[str] | None
 
 
 def _should_include_class(node: ast.ClassDef, dunder_all: list[str] | None) -> bool:
+    """Should the given class definition be included in the diffing data?"""
     name = node.name
     if dunder_all is not None:
         return name in dunder_all
@@ -96,6 +129,7 @@ def _should_include_class(node: ast.ClassDef, dunder_all: list[str] | None) -> b
 
 
 def _should_include_assignment(node: ast.Assign, dunder_all: list[str] | None) -> bool:
+    """Should the given assignment be included in the diffing data?"""
     name = _node_to_string(node.targets[0])
     if name == "__all__":
         return False
@@ -105,6 +139,7 @@ def _should_include_assignment(node: ast.Assign, dunder_all: list[str] | None) -
 
 
 def _should_include_ann_assignment(node: ast.AnnAssign, dunder_all: list[str] | None) -> bool:
+    """Should the given annotated assignment be included in the diffing data?"""
     name = _node_to_string(node.target)
     if dunder_all is not None:
         return name in dunder_all
@@ -112,12 +147,14 @@ def _should_include_ann_assignment(node: ast.AnnAssign, dunder_all: list[str] | 
 
 
 def _node_to_string(node: ast.expr | None) -> str | None:
+    """Convert the given ast node to a string."""
     if node is None:
         return None
     return ast.unparse(node)
 
 
 def _infer_type_for_node(node: ast.expr | None) -> str | None:  # noqa: PLR0911
+    """Infer the type for the given ast node."""
     if node is None:
         return None
 
@@ -145,6 +182,7 @@ def _infer_type_for_node(node: ast.expr | None) -> str | None:  # noqa: PLR0911
 
 
 def _infer_types_for_nodes(nodes: list[ast.expr]) -> str:
+    """Infer the types for the given list of ast nodes."""
     subtypes: list[str] = []
     for node in nodes:
         subtype = _infer_type_for_node(node)

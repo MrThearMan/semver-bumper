@@ -2,22 +2,39 @@ from __future__ import annotations
 
 import dataclasses
 from enum import Enum
-from typing import Any, Generator
+from itertools import zip_longest
+from typing import TYPE_CHECKING, Any, Generator, Iterator, NamedTuple
+
+if TYPE_CHECKING:
+    import ast
 
 __all__ = [
+    "ArgKind",
     "ArgumentData",
     "AssignmentData",
+    "BodyData",
     "ClassData",
     "Diff",
+    "DiffKind",
+    "FunctionArguments",
     "FunctionData",
     "Generator",
 ]
+
+
+class ArgKind(str, Enum):
+    POSITIONAL_ONLY = "POSITIONAL_ONLY"
+    REGULAR = "REGULAR"
+    KEYWORD_ONLY = "KEYWORD_ONLY"
+    ARGS = "ARGS"
+    KWARGS = "KWARGS"
 
 
 @dataclasses.dataclass
 class ArgumentData:
     name: str
     type: str | None
+    kind: ArgKind
 
 
 @dataclasses.dataclass
@@ -46,24 +63,6 @@ class BodyData:
     assignments: dict[str, AssignmentData] = dataclasses.field(default_factory=dict)
 
 
-@dataclasses.dataclass
-class ModuleData:
-    name: str
-    body: BodyData
-
-    @property
-    def functions(self) -> dict[str, FunctionData]:
-        return self.body.functions
-
-    @property
-    def classes(self) -> dict[str, ClassData]:
-        return self.body.classes
-
-    @property
-    def assignments(self) -> dict[str, AssignmentData]:
-        return self.body.assignments
-
-
 class DiffKind(str, Enum):
     ADDITION = "ADDITION"
     DELETION = "DELETION"
@@ -77,3 +76,40 @@ class Diff:
     kind: DiffKind
     old: Any
     new: Any
+
+
+class FunctionArguments(NamedTuple):
+    posonlyargs: list[ast.arg]
+    args: list[ast.arg]
+    vararg: ast.arg | None
+    kwonlyargs: list[ast.arg]
+    kw_defaults: list[ast.expr | None]
+    kwarg: ast.arg | None
+    defaults: list[ast.expr]
+
+    @classmethod
+    def from_ast(cls, node: ast.FunctionDef) -> FunctionArguments:
+        return cls(
+            posonlyargs=node.args.posonlyargs,
+            args=node.args.args,
+            vararg=node.args.vararg,
+            kwonlyargs=node.args.kwonlyargs,
+            kw_defaults=node.args.kw_defaults,
+            kwarg=node.args.kwarg,
+            defaults=node.args.defaults,
+        )
+
+    @property
+    def args_with_defaults(self) -> Iterator[tuple[ast.arg, ast.expr | None]]:
+        return reversed(
+            list(
+                zip_longest(
+                    reversed(self.posonlyargs + self.args),
+                    reversed(self.defaults),
+                )
+            )
+        )
+
+    @property
+    def kwargs_with_defaults(self) -> Iterator[tuple[ast.arg, ast.expr | None]]:
+        return zip(self.kwonlyargs, self.kw_defaults)
