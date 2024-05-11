@@ -480,7 +480,8 @@ class Class_1:
     class Class_2:
         foo = {1: "foo", "z": [1, 2, 3]}
 
-    def __init__(self, foo: Foo) -> None: ...
+    def __init__(self, bar: Bar) -> None:
+        self.bar = bar
 
     def method(self, foo: int) -> None: ...
 

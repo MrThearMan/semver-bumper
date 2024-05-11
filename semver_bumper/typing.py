@@ -38,6 +38,12 @@ class ArgumentData:
 
 
 @dataclasses.dataclass
+class ClassAttributeData:
+    name: str
+    type: str | None
+
+
+@dataclasses.dataclass
 class FunctionData:
     name: str
     args: list[ArgumentData]
@@ -48,6 +54,7 @@ class FunctionData:
 class ClassData:
     name: str
     body: BodyData
+    attributes: dict[str, ClassAttributeData] = dataclasses.field(default_factory=dict)
 
 
 @dataclasses.dataclass

@@ -12,7 +12,6 @@ __all__ = [
     "find_file_contents_in_ref",
     "find_initial_commit_hash",
     "find_previous_version",
-    "get_head_commit_hash",
     "has_new_commits_since_ref",
     "run_command",
 ]

@@ -2,9 +2,19 @@ from __future__ import annotations
 
 import ast
 import json
+from typing import Iterable
 
-from .typing import ArgKind, ArgumentData, AssignmentData, BodyData, ClassData, FunctionArguments, FunctionData
-from .utils import is_dunder_method, is_internal_method
+from .typing import (
+    ArgKind,
+    ArgumentData,
+    AssignmentData,
+    BodyData,
+    ClassAttributeData,
+    ClassData,
+    FunctionArguments,
+    FunctionData,
+)
+from .utils import is_class_dunder_method, is_class_internal_method, is_dunder_method, is_internal_method
 
 __all__ = [
     "parse_module_body",
@@ -49,6 +59,7 @@ def _parse_body(nodes: list[ast.stmt], *, dunder_all: list[str] | None = None) -
             body.classes[name] = ClassData(
                 name=name,
                 body=_parse_body(node.body),
+                attributes=_get_class_attributes(node.body),
             )
 
         elif isinstance(node, ast.Assign) and _should_include_assignment(node, dunder_all):
@@ -112,7 +123,28 @@ def _get_argument_data(node: ast.FunctionDef) -> list[ArgumentData]:
     return data
 
 
-def _should_include_function(node: ast.FunctionDef, dunder_all: list[str] | None) -> bool:
+def _get_class_attributes(nodes: list[ast.stmt]) -> dict[str, ClassAttributeData]:
+    """Get class attributes from the body of a class definition."""
+    data: dict[str, ClassAttributeData] = {}
+    for node in nodes:
+        # Only look for class attribute declarations from the `__init__` method.
+        if not isinstance(node, ast.FunctionDef) or node.name != "__init__":
+            continue
+
+        args = _get_argument_data(node)
+        for item in node.body:
+            if isinstance(item, ast.Assign) and _should_include_class_assignment(item):
+                name = _node_to_string(item.targets[0]).split(".")[-1]
+                data[name] = ClassAttributeData(name=name, type=_infer_type_for_node(item.value, args))
+
+            elif isinstance(item, ast.AnnAssign) and _should_include_class_ann_assignment(item):
+                name = _node_to_string(item.target).split(".")[-1]
+                data[name] = ClassAttributeData(name=name, type=_node_to_string(item.annotation))
+
+    return data
+
+
+def _should_include_function(node: ast.FunctionDef, dunder_all: list[str] | None = None) -> bool:
     """Should the given function definition be included in the diffing data?"""
     name = node.name
     if dunder_all is not None:
@@ -120,7 +152,7 @@ def _should_include_function(node: ast.FunctionDef, dunder_all: list[str] | None
     return not is_internal_method(name) or is_dunder_method(name)
 
 
-def _should_include_class(node: ast.ClassDef, dunder_all: list[str] | None) -> bool:
+def _should_include_class(node: ast.ClassDef, dunder_all: list[str] | None = None) -> bool:
     """Should the given class definition be included in the diffing data?"""
     name = node.name
     if dunder_all is not None:
@@ -128,7 +160,7 @@ def _should_include_class(node: ast.ClassDef, dunder_all: list[str] | None) -> b
     return not is_internal_method(name) or is_dunder_method(name)
 
 
-def _should_include_assignment(node: ast.Assign, dunder_all: list[str] | None) -> bool:
+def _should_include_assignment(node: ast.Assign, dunder_all: list[str] | None = None) -> bool:
     """Should the given assignment be included in the diffing data?"""
     name = _node_to_string(node.targets[0])
     if name == "__all__":
@@ -138,12 +170,24 @@ def _should_include_assignment(node: ast.Assign, dunder_all: list[str] | None) -
     return not is_internal_method(name) or is_dunder_method(name)
 
 
-def _should_include_ann_assignment(node: ast.AnnAssign, dunder_all: list[str] | None) -> bool:
+def _should_include_ann_assignment(node: ast.AnnAssign, dunder_all: list[str] | None = None) -> bool:
     """Should the given annotated assignment be included in the diffing data?"""
     name = _node_to_string(node.target)
     if dunder_all is not None:
         return name in dunder_all
     return not is_internal_method(name) or is_dunder_method(name)
+
+
+def _should_include_class_assignment(node: ast.Assign) -> bool:
+    """Should the given class assignment be included in the diffing data?"""
+    name = _node_to_string(node.targets[0])
+    return not is_class_internal_method(name) or is_class_dunder_method(name)
+
+
+def _should_include_class_ann_assignment(node: ast.AnnAssign) -> bool:
+    """Should the given class assignment be included in the diffing data?"""
+    name = _node_to_string(node.target)
+    return not is_class_internal_method(name) or is_class_dunder_method(name)
 
 
 def _node_to_string(node: ast.expr | None) -> str | None:
@@ -153,13 +197,19 @@ def _node_to_string(node: ast.expr | None) -> str | None:
     return ast.unparse(node)
 
 
-def _infer_type_for_node(node: ast.expr | None) -> str | None:  # noqa: PLR0911
+def _infer_type_for_node(node: ast.expr | None, args: Iterable[ArgumentData] = ()) -> str | None:  # noqa: PLR0911
     """Infer the type for the given ast node."""
     if node is None:
         return None
 
     if isinstance(node, ast.Constant):
         return type(node.value).__name__
+
+    if isinstance(node, ast.Name):
+        for arg in args:
+            if arg.name == node.id:
+                return arg.type
+        return None
 
     if isinstance(node, ast.List):
         subtypes = _infer_types_for_nodes(node.elts)

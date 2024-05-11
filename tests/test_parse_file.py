@@ -38,6 +38,7 @@ def test_parse_file() -> None:
             "classes": {},
             "functions": {},
         },
+        "attributes": {},
     }
     assert results["classes"]["Bar"] == {
         "name": "Bar",
@@ -59,6 +60,7 @@ def test_parse_file() -> None:
             "classes": {},
             "functions": {},
         },
+        "attributes": {},
     }
     assert results["classes"]["Barr"] == {
         "name": "Barr",
@@ -80,6 +82,7 @@ def test_parse_file() -> None:
             "classes": {},
             "functions": {},
         },
+        "attributes": {},
     }
     assert results["classes"]["Baz"] == {
         "name": "Baz",
@@ -101,6 +104,7 @@ def test_parse_file() -> None:
             "classes": {},
             "functions": {},
         },
+        "attributes": {},
     }
     assert results["classes"]["Bazz"] == {
         "name": "Bazz",
@@ -122,6 +126,7 @@ def test_parse_file() -> None:
             "classes": {},
             "functions": {},
         },
+        "attributes": {},
     }
     assert results["classes"]["Fizz"] == {
         "name": "Fizz",
@@ -139,6 +144,7 @@ def test_parse_file() -> None:
             "classes": {},
             "functions": {},
         },
+        "attributes": {},
     }
     assert results["classes"]["Buzz"] == {
         "name": "Buzz",
@@ -152,6 +158,7 @@ def test_parse_file() -> None:
             "classes": {},
             "functions": {},
         },
+        "attributes": {},
     }
     assert results["classes"]["Class_1"] == {
         "name": "Class_1",
@@ -175,6 +182,7 @@ def test_parse_file() -> None:
                         "classes": {},
                         "functions": {},
                     },
+                    "attributes": {},
                 }
             },
             "functions": {
@@ -187,8 +195,8 @@ def test_parse_file() -> None:
                             "kind": ArgKind.REGULAR,
                         },
                         {
-                            "name": "foo",
-                            "type": "Foo",
+                            "name": "bar",
+                            "type": "Bar",
                             "kind": ArgKind.REGULAR,
                         },
                     ],
@@ -248,6 +256,12 @@ def test_parse_file() -> None:
                     ],
                     "return_type": "None",
                 },
+            },
+        },
+        "attributes": {
+            "bar": {
+                "name": "bar",
+                "type": "Bar",
             },
         },
     }

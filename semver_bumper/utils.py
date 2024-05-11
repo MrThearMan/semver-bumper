@@ -47,6 +47,22 @@ def is_dunder_method(name: str) -> bool:
     return name.startswith("__") and name.endswith("__")
 
 
+def is_class_internal_method(name: str) -> bool:
+    """Is the given name an internal method?"""
+    parts = name.split(".")
+    if len(parts) != 2:  # noqa: PLR2004
+        return False
+    return parts[0] == "self" and is_internal_method(parts[1])
+
+
+def is_class_dunder_method(name: str) -> bool:
+    """Is the given name an internal method?"""
+    parts = name.split(".")
+    if len(parts) != 2:  # noqa: PLR2004
+        return False
+    return parts[0] == "self" and is_dunder_method(parts[1])
+
+
 def find_python_files(path: Path) -> Generator[Path, None, None]:
     """
     Find all python files in the given directory and its subdirectories.
