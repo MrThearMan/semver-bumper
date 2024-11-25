@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 import dataclasses
+from collections.abc import Generator, Iterator
 from enum import Enum
 from itertools import zip_longest
-from typing import TYPE_CHECKING, Any, Generator, Iterator, NamedTuple
+from typing import TYPE_CHECKING, Any, NamedTuple
 
 if TYPE_CHECKING:
     import ast
