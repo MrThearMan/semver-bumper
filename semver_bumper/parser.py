@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import ast
 import json
-from typing import Iterable
+from typing import TYPE_CHECKING
 
 from .typing import (
     ArgKind,
@@ -15,6 +15,9 @@ from .typing import (
     FunctionData,
 )
 from .utils import is_class_dunder_method, is_class_internal_method, is_dunder_method, is_internal_method
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
 
 __all__ = [
     "parse_module_body",
