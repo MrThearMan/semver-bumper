@@ -48,7 +48,7 @@ python = ">=3.10,<4"
 
 [tool.poetry.group.test.dependencies]
 pytest = "8.3.4"
-coverage = "7.6.10"
+coverage = "7.6.11"
 tox = "4.24.1"
 tox-gh-actions = "3.2.0"
 
@@ -58,7 +58,7 @@ pymdown-extensions = "10.14.3"
 mkdocs-mermaid2-plugin = "1.2.1"
 
 [tool.poetry.group.lint.dependencies]
-mypy = "1.14.1"
+mypy = "1.15.0"
 pre-commit = "4.1.0"
 
 [tool.ruff]
