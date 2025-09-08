@@ -1,17 +1,14 @@
-[tool.poetry]
+[project]
 name = "semver-bumper"
 version = "0.0.0"
 description = "Automate semantic version bumping from function argument changes."
 authors = [
-    "Matti Lamppu <lamppu.matti.akseli@gmail.com>",
+    { name = "Matti Lamppu", email = "lamppu.matti.akseli@gmail.com" },
 ]
-packages = [
-    { include = "semver_bumper" },
-]
-license = "MIT"
-readme = "README.md"
 homepage = "https://mrthearman.github.io/semver-bumper"
 repository = "https://github.com/MrThearMan/semver-bumper"
+license = "MIT"
+readme = "README.md"
 keywords = [
     "semver",
     "semantic",
@@ -27,39 +24,35 @@ classifiers = [
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
 ]
-include = [
-    "README.md",
-    "LICENSE",
-]
-exclude = [
-    "tests",
+requires-python = ">=3.11,<4"
+dynamic = [
+    "dependencies",
 ]
 
-[tool.poetry.urls]
-"Bug Tracker" = "https://github.com/MrThearMan/semver-bumper/issues"
+[tool.poetry]
+requires-poetry = ">=2.0.0"
+packages = [
+    { include = "semver_bumper" },
+]
 
 [tool.poetry.dependencies]
-python = ">=3.10,<4"
 
 [tool.poetry.group.test.dependencies]
-pytest = "8.4.1"
-coverage = "7.10.2"
-tox = "4.28.4"
-tox-gh-actions = "3.3.0"
+pytest = "8.4.2"
+coverage = "7.10.6"
+nox = "2025.5.1"
 
 [tool.poetry.group.docs.dependencies]
 mkdocs = "1.6.1"
 pymdown-extensions = "10.16.1"
-mkdocs-mermaid2-plugin = "1.2.1"
+mkdocs-mermaid2-plugin = "1.2.2"
 
 [tool.poetry.group.lint.dependencies]
-mypy = "1.17.1"
-pre-commit = "4.2.0"
+pre-commit = "4.3.0"
 
 [tool.ruff]
 fix = true
@@ -146,8 +139,6 @@ lint.extend-select = [
     "UP042",    # replace-str-enum
 ]
 lint.ignore = [
-    "ANN101",   # Missing type annotation for `self` in method
-    "ANN102",   # Missing type annotation for `cls` in method
     "ANN401",   # Any-typing allowed
     "ARG001",   # Unused function argument
     "ARG002",   # Unused method argument
@@ -257,29 +248,6 @@ exclude_lines = [
 [tool.pytest.ini_options]
 addopts = "-vv -s --disable-warnings"
 
-[tool.tox]
-legacy_tox_ini = """
-[tox]
-envlist = py{310, 311, 312, 313}
-isolated_build = true
-
-[gh-actions]
-python =
-    3.10: py310
-    3.11: py311
-    3.12: py312
-    3.13: py313
-
-[testenv]
-allowlist_externals =
-    poetry
-setenv =
-    PYTHONPATH = {toxinidir}
-commands =
-    poetry install
-    poetry run coverage run -m pytest -vv -s --disable-warnings
-"""
-
 [build-system]
-requires = ["poetry-core>=1.9.0"]
+requires = ["poetry-core>=2.0.0"]
 build-backend = "poetry.core.masonry.api"

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import dataclasses
 from collections.abc import Generator, Iterator
-from enum import Enum
+from enum import StrEnum
 from itertools import zip_longest
 from typing import TYPE_CHECKING, Any, NamedTuple
 
@@ -23,7 +23,7 @@ __all__ = [
 ]
 
 
-class ArgKind(str, Enum):
+class ArgKind(StrEnum):
     POSITIONAL_ONLY = "POSITIONAL_ONLY"
     REGULAR = "REGULAR"
     KEYWORD_ONLY = "KEYWORD_ONLY"
@@ -71,7 +71,7 @@ class BodyData:
     assignments: dict[str, AssignmentData] = dataclasses.field(default_factory=dict)
 
 
-class DiffKind(str, Enum):
+class DiffKind(StrEnum):
     ADDITION = "ADDITION"
     DELETION = "DELETION"
     RETURN_TYPE_MODIFICATION = "RETURN_TYPE_MODIFICATION"
@@ -120,4 +120,4 @@ class FunctionArguments(NamedTuple):
 
     @property
     def kwargs_with_defaults(self) -> Iterator[tuple[ast.arg, ast.expr | None]]:
-        return zip(self.kwonlyargs, self.kw_defaults)
+        return zip(self.kwonlyargs, self.kw_defaults, strict=False)
